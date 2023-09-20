@@ -19,10 +19,13 @@ public class AssignmentController {
     @Autowired
     private AssignmentRepository assignmentRepository;
 
+
     @PostMapping("/assignment")
     public AssignmentDTO addAssignment(@RequestBody AssignmentDTO assignmentDTO) {
         Assignment newAssignment = new Assignment();
-        newAssignment.setName(assignmentDTO.assignmentName()); // Use assignmentName from AssignmentDTO
+        newAssignment.setName(assignmentDTO.assignmentName());// Use assignmentName from AssignmentDTO
+
+
         // Set other assignment properties like due date, course, etc.
 
         // Save the new assignment to the database

@@ -1,5 +1,6 @@
 package com.cst438.controllers;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,8 @@ public class AssignmentController {
 
 		// Set the name property of the Assignment object using assignmentDTO
 		newAssignment.setName(assignmentDTO.assignmentName());
-
+		newAssignment.setCourse(courseRepository.findById(assignmentDTO.courseId()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Assignment not found")));
+		newAssignment.setDueDate(Date.valueOf(assignmentDTO.dueDate()));
 		// Set other assignment properties like due date, course, etc.
 
 		// Save the new assignment to the database
