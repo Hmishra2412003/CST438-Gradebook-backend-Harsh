@@ -101,7 +101,7 @@ public class AssignmentController {
 		// Update the assignment properties from the DTO
 		assignment.setName(updatedAssignmentDTO.assignmentName());
 		// Update other assignment properties as needed
-
+		assignment.setDueDate(Date.valueOf(updatedAssignmentDTO.dueDate()));
 		// Save the updated assignment to the database
 		Assignment updatedAssignment = assignmentRepository.save(assignment);
 
