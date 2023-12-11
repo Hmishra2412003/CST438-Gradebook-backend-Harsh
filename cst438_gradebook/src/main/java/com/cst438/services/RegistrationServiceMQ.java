@@ -43,24 +43,49 @@ public class RegistrationServiceMQ implements RegistrationService {
 	@RabbitListener(queues = "gradebook-queue")
 	@Transactional
 	public void receive(String message) {
-		
-		System.out.println("Gradebook has received: "+message);
+		System.out.println("Gradebook has received: " + message);
 
-		//TODO  deserialize message to EnrollmentDTO and update database
+		// Deserialize the received JSON message to EnrollmentDTO
+		EnrollmentDTO enrollmentDTO = fromJsonString(message, EnrollmentDTO.class);
+
+		Course course = courseRepository.findById(enrollmentDTO.courseId()).orElse(null);
+		Enrollment enroll = new Enrollment();
+		enroll.setStudentEmail(enrollmentDTO.studentEmail());
+		enroll.setStudentName(enrollmentDTO.studentName());
+		enroll.setCourse(course);
+
+		enrollmentRepository.save(enroll);
 	}
+
 
 	/*
 	 * Send final grades to Registration Service 
 	 */
 	@Override
 	public void sendFinalGrades(int course_id, FinalGradeDTO[] grades) {
-		 
-		System.out.println("Start sendFinalGrades "+course_id);
+		System.out.println("Start sendFinalGrades " + course_id);
 
-		//TODO convert grades to JSON string and send to registration service
-		
+		try {
+			// Convert the grades array to a JSON string
+			String gradesJson = asJsonString(grades);
+
+			// Create an EnrollmentDTO object with the course_id and the grades JSON
+			EnrollmentDTO enrollmentDTO = new EnrollmentDTO(0, null, null, course_id);
+
+			// Serialize the EnrollmentDTO to a JSON string
+			String enrollmentJson = asJsonString(enrollmentDTO);
+
+			// Send the enrollmentJson message to the registration-queue in RabbitMQ
+			rabbitTemplate.convertAndSend(registrationQueue.getName(), enrollmentJson);
+
+			System.out.println("Final grades sent to Registration Service: " + enrollmentJson);
+		} catch (Exception e) {
+			// Handle exceptions appropriately
+			e.printStackTrace();
+		}
 	}
-	
+
+
 	private static String asJsonString(final Object obj) {
 		try {
 			return new ObjectMapper().writeValueAsString(obj);
