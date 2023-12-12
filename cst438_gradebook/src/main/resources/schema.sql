@@ -1,3 +1,10 @@
+create table user_table (
+                            id identity primary key auto_increment,
+                            username varchar(25) unique,
+                            password varchar(100),
+                            role varchar(25)
+);
+
 CREATE TABLE course (
   course_id int NOT NULL,
   instructor varchar(255) DEFAULT NULL,

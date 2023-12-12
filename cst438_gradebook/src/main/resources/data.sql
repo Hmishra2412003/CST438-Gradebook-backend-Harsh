@@ -1,5 +1,11 @@
 
-INSERT INTO course (year, semester, course_id, title, instructor)  VALUES 
+insert into user_table
+(username, password, role) values
+                               ('dwisneski@csumb.edu','$2a$10$enO8ZvKHDfsy.4TzKx0T3Oh85bOv3VKp6jGdGkK.wtuLxOpS6hJkK','INSTRUCTOR' ),
+                               ('user@csumb.edu', '$2a$10$3XpwR7rg4/kUoyew/GPd8uJLNmesRU/9e77FDW5aMvK60QWwjus/K','USER'),
+                               ('admin@csumb.edu', '$2a$10$G.ViqhLfJtKaMuDCSPSD8eYVzI.wXbP2BkxnQY9a9aNfx2ekvR0CW', 'ADMIN');
+
+INSERT INTO course (year, semester, course_id, title, instructor)  VALUES
 (2020,'Fall',30157,'BUS 203 - Financial Accounting','cchou@csumb.edu'),
 (2020,'Fall',30163,'BUS 306 - Fundamentals of Marketing','anariswari@csumb.edu'),
 (2020,'Fall',30291,'BUS 304 - Business Communication, Pro-seminar & Critical Thinking','kposteher@csumb.edu'),
